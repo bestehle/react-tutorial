@@ -1,0 +1,57 @@
+{
+    # "extends": "holidaycheck/es2015",
+    "parser": "babel-eslint",
+    "env": {
+        "node": true,
+        "browser": true
+    },
+
+    "globals": {
+        "Promise": true
+    },
+
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
+
+    "plugins": [ "eslint-plugin-react", "eslint-plugin-import", "babel" ],
+
+    "rules": {
+        "generator-star-spacing": [2, {"before": true, "after": true}],
+        "consistent-return": "off",
+        "no-extra-parens": "off",
+        "new-cap": "off",
+        "jsx-quotes": [ "error", "prefer-single" ],
+
+        "react/display-name": "off",
+        "react/jsx-uses-react": "error",
+        "react/jsx-uses-vars": "error",
+        "react/jsx-no-undef": "error",
+        "react/no-did-mount-set-state": "error",
+        "react/no-did-update-set-state": "error",
+        "react/no-multi-comp": [ "warn", { "ignoreStateless": true } ],
+        "react/prop-types": [ "warn", { "ignore": [ "children" ] } ],
+        "react/no-unknown-property": "error",
+        # "react/react-in-jsx-scope": "warn",
+        "react/self-closing-comp": "error",
+        "react/wrap-multilines": "error",
+        "react/no-direct-mutation-state": "error",
+        "react/require-render-return": "error",
+
+        "import/no-unresolved": "off",
+        "import/named": "error",
+        "import/default": "error",
+        "import/namespace": "error",
+        "import/no-commonjs": "error",
+        "import/no-named-as-default": "error",
+        "import/export": "error",
+        "import/no-duplicates": "error",
+        "import/imports-first": [ "error", "absolute-first" ]
+    },
+
+    "settings": {
+        "import/ignore": [ "node_modules", "\\.json$" ]
+    }
+}
