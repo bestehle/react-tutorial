@@ -21,9 +21,23 @@ var CommentBox = React.createClass({
       url: this.props.url,
       dataType: 'json',
       cache: false,
-      success: data => {
+      success: function(data) {
         this.setState({data: data});
-      },
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
+  handleCommentSubmit: function(comment) {
+    $.ajax({
+      url: this.props.url,
+      dataType: 'json',
+      type: 'POST',
+      data: comment,
+      success: function(data) {
+        this.setState({data: data});
+      }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
       }.bind(this)
@@ -37,7 +51,7 @@ var CommentBox = React.createClass({
     return (
       <div className='commentBox'>
         <h1>Commments</h1>
-        <CommentForm/>
+        <CommentForm onCommentSubmit={this.handleCommentSubmit}/>
         <CommentList data={this.state.data}/>
       </div>
     );
@@ -46,7 +60,6 @@ var CommentBox = React.createClass({
 
 var CommentList = React.createClass({
   render: function() {
-    console.log(this.props);
     var commentNodes = this.props.data.map(comment => {
       return (
         <Comment author={comment.author} key={comment.id}>
@@ -64,19 +77,29 @@ var CommentList = React.createClass({
 
 var CommentForm = React.createClass({
   getInitialState: function() {
-    return {author: '', text: ''};
+    return {author: 'test', text: 'test'};
   },
   handleAuthorChange: function(e) {
-    this.setState({author: e.target.Value});
+    this.setState({author: e.target.value});
   },
   handleTextChange: function(e) {
-    this.setState({text: e.target.Value});
+    this.setState({text: e.target.value});
+  },
+  handleSubmit: function(e) {
+    e.preventDefault();
+    var author = this.state.author.trim();
+    var text = this.state.text.trim();
+    if (!text || !author) {
+      return;
+    }
+    this.props.onCommentSubmit({author: author, text: text});
+    this.setState({author: '', text: ''});
   },
   render: function() {
     return (
-      <form className='commentForm'>
-        <input type='text' placeholder='Your name' value={this.state.author} onChange='handleAuthorChange'/>
-        <input type='text' placeholder='Say something...' value={this.state.text} onChange='handleTextChange'/>
+      <form className='commentForm' onSubmit={this.handleSubmit}>
+        <input type='text' placeholder='Your name' value={this.state.author} onChange={this.handleAuthorChange}/>
+        <input type='text' placeholder='Say something...' value={this.state.text} onChange={this.handleTextChange}/>
         <input type='submit' value='Post'/>
       </form>
     );
